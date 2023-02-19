@@ -13,7 +13,7 @@ const firebaseConfig = {
   projectId: "net-ter",
   storageBucket: "net-ter.appspot.com",
   messagingSenderId: "135691417415",
-  appId: "1:135691417415:web:fac6ac9cc63c7b15dbfe62",
+  appId: process.env.NEXT_PUBLIC_APP_ID,
   measurementId: "G-XFDE1JS1VZ",
 };
 
