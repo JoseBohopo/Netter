@@ -1,0 +1,37 @@
+import { initializeApp } from "firebase/app";
+import {
+  GithubAuthProvider,
+  signInWithPopup,
+  getAuth,
+  UserCredential,
+} from "firebase/auth";
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  authDomain: "net-ter.firebaseapp.com",
+  projectId: "net-ter",
+  storageBucket: "net-ter.appspot.com",
+  messagingSenderId: "135691417415",
+  appId: "1:135691417415:web:fac6ac9cc63c7b15dbfe62",
+  measurementId: "G-XFDE1JS1VZ",
+};
+
+initializeApp(firebaseConfig);
+export const auth = getAuth();
+
+const mapUserFromFirebaseAuth = (user: UserCredential) => {
+  const { email, displayName, photoURL } = user.user;
+  return {
+    avatar: photoURL,
+    name: displayName,
+    email: email,
+  };
+};
+
+export const loginWithGithub = () => {
+  const githubProvider = new GithubAuthProvider();
+  return signInWithPopup(auth, githubProvider).then((user) => {
+    return mapUserFromFirebaseAuth(user);
+  });
+};
