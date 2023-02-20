@@ -4,14 +4,14 @@ import { colors } from "eplant/styles/theme";
 const styles = css`
   button {
     width: 100%;
-    height: 6vh;
+    height: 35px;
     background-color: ${colors.black};
     border: 0;
     color: #fff;
     border-radius: 624.938rem;
     font-size: 1rem;
     font-weight: 800;
-    padding: 0.5rem 1.5rem;
+    padding: 0.5rem 1rem;
     text-align: center;
     align-items: center;
     cursor: pointer;

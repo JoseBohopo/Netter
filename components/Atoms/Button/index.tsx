@@ -1,10 +1,12 @@
 import styles from "./styles";
 import { IButton } from "./types";
 
-export default function Button({ children, onClick }: IButton) {
+export default function Button({ children, onClick, type }: IButton) {
   return (
     <>
-      <button onClick={onClick}>{children}</button>
+      <button type={type} onClick={onClick}>
+        {children}
+      </button>
       <style jsx>{styles}</style>
     </>
   );
