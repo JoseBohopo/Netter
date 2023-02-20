@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import {
   GithubAuthProvider,
+  EmailAuthProvider,
   signInWithPopup,
   getAuth,
   UserCredential,
@@ -29,9 +30,17 @@ const mapUserFromFirebaseAuth = (user: UserCredential) => {
   };
 };
 
-export const loginWithGithub = () => {
+export const loginWithGithub = async () => {
   const githubProvider = new GithubAuthProvider();
   return signInWithPopup(auth, githubProvider).then((user) => {
     return mapUserFromFirebaseAuth(user);
+  });
+};
+
+export const loginWithEmail = async () => {
+  const emailProvider = new EmailAuthProvider();
+  return signInWithPopup(auth, emailProvider).then((user) => {
+    console.log(user);
+    //   return mapUserFromFirebaseAuth(user);
   });
 };
