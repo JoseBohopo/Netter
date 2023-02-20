@@ -1,15 +1,48 @@
+import { useEffect, useState } from "react";
 import Head from "next/head";
-import { Inter } from "@next/font/google";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 import AppLayout from "eplant/components/AppLayout";
 import Image from "next/image";
 import { colors } from "eplant/styles/theme";
 import Button from "eplant/components/Atoms/Button";
 import Github from "eplant/components/Atoms/Icons/GitHub";
-
-const inter = Inter({ subsets: ["latin"] });
+import styles from "./styles";
+import { auth, loginWithGithub } from "eplant/firebase/client";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default function Home() {
+  const [user, setUser] = useState<{} | null>(null);
+  const [userUID, setUserUID] = useState<string | null>(null);
+  console.log(user);
+  const handleClick = async () => {
+    try {
+      const user = await loginWithGithub();
+      setUser(user);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleCreateWithEmail = () => {
+    console.log("entro aqui");
+
+    createUserWithEmailAndPassword(auth, "test1@test.com", "123456")
+      .then((user) => console.log(user))
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserUID(user.uid);
+      } else {
+        setUserUID(null);
+      }
+    });
+  }),
+    [];
+
   return (
     <>
       <Head>
@@ -34,36 +67,20 @@ export default function Home() {
             Talk about development <br /> with developers{" "}
           </h2>
           <div>
-            <Button>
-              {" "}
-              <Github fill={colors.white} /> Log in with Github
-            </Button>
+            {userUID !== null && (
+              <Button onClick={handleClick}>
+                {" "}
+                <Github fill={colors.white} /> Log in with Github
+              </Button>
+            )}
+          </div>
+          <div>
+            <Button onClick={handleCreateWithEmail}>Sign with Email</Button>
           </div>
         </section>
       </AppLayout>
 
-      <style jsx>{`
-        h1 {
-          color: ${colors.primary};
-          font-weight: 800;
-          margin-bottom: 0;
-        }
-
-        h2 {
-          color: ${colors.secondary};
-          font-size: 18px;
-          margin: 0;
-        }
-        section {
-          display: grid;
-          height: 100%;
-          place-content: center;
-          place-items: center;
-          text-align: center;
-          align-content: center;
-          gap: 1rem;
-        }
-      `}</style>
+      <style jsx>{styles}</style>
     </>
   );
 }
