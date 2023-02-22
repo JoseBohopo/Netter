@@ -1,12 +1,12 @@
-import AppLayout from "eplant/components/AppLayout";
+import AppLayout from "eplant/components/Layouts/AppLayout";
 import NextLink from "eplant/components/Atoms/NextLink";
-import Link from "next/link";
+import Title from "eplant/components/Atoms/Title";
 
 export default function Timeline() {
   return (
     <>
       <AppLayout>
-        <h1>This is the timeline</h1>
+        <Title text="This is the timeline" />
         <NextLink path="/" textArea="Go Home" />
       </AppLayout>
 
