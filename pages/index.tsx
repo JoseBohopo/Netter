@@ -2,17 +2,19 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
-import AppLayout from "eplant/components/AppLayout";
+import AppLayout from "eplant/components/Layouts/AppLayout";
 import Image from "next/image";
 import { colors } from "eplant/styles/theme";
 import Button from "eplant/components/Atoms/Button";
 import Github from "eplant/components/Atoms/Icons/GitHub";
-import styles from "./styles";
+import styles from "../components/Layouts/styles";
 import { auth, loginWithGithub } from "eplant/firebase/client";
 import { onAuthStateChanged } from "firebase/auth";
+import { IUser } from "../components/Layouts/types";
+import Avatar from "eplant/components/Molecules/Avatar";
 
 export default function Home() {
-  const [user, setUser] = useState<{} | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
   const [userUID, setUserUID] = useState<string | null>(null);
   console.log(user);
   const handleClick = async () => {
@@ -25,8 +27,6 @@ export default function Home() {
   };
 
   const handleCreateWithEmail = () => {
-    console.log("entro aqui");
-
     createUserWithEmailAndPassword(auth, "test1@test.com", "123456")
       .then((user) => console.log(user))
       .catch((error) => console.log(error));
@@ -38,6 +38,7 @@ export default function Home() {
         setUserUID(user.uid);
       } else {
         setUserUID(null);
+        setUser(null);
       }
     });
   }),
@@ -66,6 +67,7 @@ export default function Home() {
           <h2>
             Talk about development <br /> with developers{" "}
           </h2>
+
           <div>
             {userUID !== null && (
               <Button onClick={handleClick}>
@@ -75,8 +77,11 @@ export default function Home() {
             )}
           </div>
           <div>
-            <Button onClick={handleCreateWithEmail}>Sign with Email</Button>
+            <Avatar src={user?.avatar ? user?.avatar : ""} alt={user?.name} />
           </div>
+          {/* <div>
+            <Button onClick={handleCreateWithEmail}>Sign with Email</Button>
+          </div> */}
         </section>
       </AppLayout>
 
