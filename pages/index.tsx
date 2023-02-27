@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Head from "next/head";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, User } from "firebase/auth";
 
 import AppLayout from "eplant/components/Layouts/AppLayout";
 import Image from "next/image";
@@ -9,40 +9,46 @@ import Button from "eplant/components/Atoms/Button";
 import Github from "eplant/components/Atoms/Icons/GitHub";
 import styles from "../components/Layouts/styles";
 import { auth, loginWithGithub } from "eplant/firebase/client";
-import { onAuthStateChanged } from "firebase/auth";
-import { IUser } from "../components/Layouts/types";
-import Avatar from "eplant/components/Molecules/Avatar";
+import { useRouter } from "next/router";
+import useUser, { USER_STATES } from "eplant/hooks/useUser";
 
 export default function Home() {
-  const [user, setUser] = useState<IUser | null>(null);
-  const [userUID, setUserUID] = useState<string | null>(null);
-  console.log(user);
-  const handleClick = async () => {
+  const user = useUser();
+
+  const router = useRouter();
+
+  const handleClick = async (): Promise<void> => {
     try {
-      const user = await loginWithGithub();
-      setUser(user);
+      await loginWithGithub();
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleCreateWithEmail = () => {
+  const handleCreateWithEmail = (): void => {
     createUserWithEmailAndPassword(auth, "test1@test.com", "123456")
       .then((user) => console.log(user))
       .catch((error) => console.log(error));
   };
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserUID(user.uid);
-      } else {
-        setUserUID(null);
-        setUser(null);
-      }
-    });
+    user && router.replace("/home");
   }),
-    [];
+    [user];
+
+  const showButtonGithubLogin = (user: unknown): boolean | JSX.Element =>
+    user === USER_STATES.NOT_KNOWN && (
+      <div>
+        <Button onClick={handleClick}>
+          <Github fill={colors.white} /> Log in with Github
+        </Button>
+      </div>
+    );
+
+  const showSpinner = (user: unknown): boolean | JSX.Element =>
+    user === USER_STATES.NOT_KNOWN && (
+      <img src="/Hourglass.gif" alt="Spinner gif" />
+    );
 
   return (
     <>
@@ -67,18 +73,8 @@ export default function Home() {
           <h2>
             Talk about development <br /> with developers{" "}
           </h2>
-
-          <div>
-            {userUID !== null && (
-              <Button onClick={handleClick}>
-                {" "}
-                <Github fill={colors.white} /> Log in with Github
-              </Button>
-            )}
-          </div>
-          <div>
-            <Avatar src={user?.avatar ? user?.avatar : ""} alt={user?.name} />
-          </div>
+          {showButtonGithubLogin(user)}
+          {showSpinner(user)}
           {/* <div>
             <Button onClick={handleCreateWithEmail}>Sign with Email</Button>
           </div> */}
