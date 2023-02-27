@@ -19,6 +19,6 @@
       "eplant/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "styles/theme.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "styles/theme.js", "context/authContext.tsx"],
   "exclude": ["node_modules"]
 }
