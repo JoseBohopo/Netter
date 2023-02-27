@@ -4,7 +4,7 @@ const style = css`
   article {
     display: flex;
     padding: 0.625rem 0.938rem;
-    border-bottom: 0.125rem solid #eaf7ff;
+    border-bottom: 0.0625rem solid #eee;
   }
 
   div {

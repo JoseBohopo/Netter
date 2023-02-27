@@ -4,4 +4,5 @@ export interface IButton {
   children: ReactNode;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 }
