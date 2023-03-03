@@ -14,23 +14,32 @@ interface IAuthProvider {
 // // eslint-disable-next-line react/prop-types
 export const AuthContextProvider = ({ children }: IAuthProvider) => {
   const [currentUser, setCurrentUser] = useState<User>();
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      currentUser && setCurrentUser(currentUser);
-
-      console.log(
-        "🚀 ~ file: authContext.ts:18 ~ unsubscribe ~ currentUser:",
-        currentUser && currentUser
-      );
+    setLoading(true);
+    const unsubscribe = onAuthStateChanged(auth, (fetchedUser) => {
+      fetchedUser && setCurrentUser(fetchedUser);
+      fetchedUser && setLoading(false);
     });
     return () => {
-      unsubscribe();
+      (async () => {
+        try {
+          await unsubscribe();
+        } catch (error) {
+          console.error(error);
+          setLoading(false);
+        }
+      })();
     };
   }, []);
 
   return (
     // eslint-disable-next-line react/react-in-jsx-scope
-    <AuthContext.Provider value={currentUser}>{children}</AuthContext.Provider>
+    <AuthContext.Provider
+      value={{ currentUser: currentUser, isLoading: loading }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
 };
