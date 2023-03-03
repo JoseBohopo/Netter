@@ -1,28 +1,34 @@
+import { time } from "console";
 import AppLayout from "eplant/components/Layouts/AppLayout";
 import Nettwit from "eplant/components/Organisms/Nettwit";
+import { fetchLatestNettwits } from "eplant/firebase/client";
 import useUser from "eplant/hooks/useUser";
 import { colors } from "eplant/styles/theme";
 import { useEffect, useState } from "react";
 
-const URL_API = "http://localhost:3000/api/statuses/home_timeline";
-
 function Home() {
-  const [timeline, setTimeline] = useState([]);
+  const [timeline, setTimeline] = useState<any>();
   const user = useUser();
   useEffect(() => {
     user &&
-      fetch(URL_API)
-        .then((res) => res.json())
-        .then(setTimeline);
+      fetchLatestNettwits()
+        .then(setTimeline)
+        .catch((error) => console.log(error));
+    console.log(
+      "🚀 ~ file: index.tsx:20 ~ useEffect ~  fetchLatestNettwits():",
+      fetchLatestNettwits()
+    );
   }, [user]);
+
   const timelineMapped = (timeline: any[]): JSX.Element[] =>
-    timeline.map((nettwit: any) => {
+    timeline?.map((nettwit: any) => {
       return (
         <Nettwit
           key={nettwit.id}
-          username={nettwit.username}
+          createdAt={nettwit.createdAt}
+          userName={nettwit.userName}
           avatar={nettwit.avatar}
-          message={nettwit.message}
+          content={nettwit.content}
         />
       );
     });
