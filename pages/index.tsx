@@ -10,10 +10,11 @@ import Github from "eplant/components/Atoms/Icons/GitHub";
 import styles from "../components/Layouts/styles";
 import { auth, loginWithGithub } from "eplant/firebase/client";
 import { useRouter } from "next/router";
-import useUser, { USER_STATES } from "eplant/hooks/useUser";
+import useUser, { IUser, USER_STATES } from "eplant/hooks/useUser";
 
 export default function Home() {
-  const user = useUser();
+  const { currentUser } = useUser() as IUser;
+  console.log("🚀 ~ file: index.tsx:17 ~ Home ~ user:", currentUser);
 
   const router = useRouter();
 
@@ -32,9 +33,9 @@ export default function Home() {
   };
 
   useEffect(() => {
-    user && router.replace("/home");
+    currentUser && router.replace("/home");
   }),
-    [user];
+    [currentUser];
 
   const showButtonGithubLogin = (user: unknown): boolean | JSX.Element =>
     user === USER_STATES.NOT_KNOWN && (
@@ -73,8 +74,8 @@ export default function Home() {
           <h2>
             Talk about development <br /> with developers{" "}
           </h2>
-          {showButtonGithubLogin(user)}
-          {showSpinner(user)}
+          {showButtonGithubLogin(currentUser)}
+          {showSpinner(currentUser)}
           {/* <div>
             <Button onClick={handleCreateWithEmail}>Sign with Email</Button>
           </div> */}
