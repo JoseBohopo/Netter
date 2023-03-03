@@ -14,7 +14,6 @@ import useUser, { IUser, USER_STATES } from "eplant/hooks/useUser";
 
 export default function Home() {
   const { currentUser } = useUser() as IUser;
-  console.log("🚀 ~ file: index.tsx:17 ~ Home ~ user:", currentUser);
 
   const router = useRouter();
 
