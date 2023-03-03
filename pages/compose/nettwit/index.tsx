@@ -1,20 +1,45 @@
+import { useState } from "react";
 import Button from "eplant/components/Atoms/Button";
 import AppLayout from "eplant/components/Layouts/AppLayout";
-import useUser from "eplant/hooks/useUser";
-import { useState } from "react";
+import useUser, { IUser } from "eplant/hooks/useUser";
+import { addNettwit } from "eplant/firebase/client";
+import { useRouter } from "next/router";
+
+const FORM_STATES = {
+  LOADING: 0,
+  SUCCESS: 1,
+  ERROR: 2,
+  USER_NOT_KNOWN: -1,
+};
 
 function ComposeNettwit() {
+  const router = useRouter();
   const [message, setMessage] = useState<string>();
+  const [status, setStatus] = useState<number>(FORM_STATES.USER_NOT_KNOWN);
+  const { currentUser } = useUser() as IUser;
 
+  const isButtonDisabled = !message?.length || status === FORM_STATES.LOADING;
   const handleChange = (event: any) => {
-    const { value } = event.target;
-    // const user = useUser();
+    const { value } = event?.target;
 
     setMessage(value);
   };
 
-  const handleSubmit = (e: any) => {
-    e.prevent.default();
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus(FORM_STATES.LOADING);
+    const { photoURL, uid, displayName } = currentUser;
+    addNettwit({
+      avatar: photoURL,
+      content: message,
+      userId: uid,
+      userName: displayName,
+    })
+      .then(() => router.push("/home"))
+      .catch((error) => {
+        setStatus(FORM_STATES.ERROR);
+        console.error(error);
+      });
   };
   return (
     <>
@@ -26,7 +51,10 @@ function ComposeNettwit() {
             placeholder="What is going on?"
           ></textarea>
           <div>
-            <Button disabled={!message?.length} onClick={handleSubmit}>
+            <Button
+              onClick={() => console.log("hola")}
+              disabled={isButtonDisabled}
+            >
               Net
             </Button>
           </div>
