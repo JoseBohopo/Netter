@@ -1,6 +1,7 @@
 export interface INettwit {
-  username?: string;
+  userName?: string;
   avatar?: string;
-  message?: string;
+  content?: string;
+  createdAt?: string;
   id?: number;
 }

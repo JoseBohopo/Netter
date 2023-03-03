@@ -1,9 +1,10 @@
+import { formatDistance, subDays } from "date-fns";
 import TextStrong from "eplant/components/Atoms/TextStrong";
 import Avatar from "eplant/components/Molecules/Avatar";
 import style from "./styles";
 import { INettwit } from "./types";
 
-function Nettwit({ avatar, username, id, message }: INettwit) {
+function Nettwit({ avatar, userName, id, content, createdAt }: INettwit) {
   return (
     <>
       <article key={id}>
@@ -11,8 +12,9 @@ function Nettwit({ avatar, username, id, message }: INettwit) {
           <Avatar src={avatar} />
         </div>
         <section>
-          <TextStrong text={username} />
-          <p>{message}</p>
+          <TextStrong text={userName} />
+          <p>{createdAt}</p>
+          <p>{content}</p>
         </section>
       </article>
       <style jsx>{style}</style>
