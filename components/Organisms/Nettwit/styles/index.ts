@@ -10,6 +10,16 @@ const style = css`
   div {
     padding-right: 0.5rem;
   }
+  .head-content {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .head-content p {
+    font-size: 13px;
+    color: #808080;
+  }
   p {
     line-height: 1.3125;
     margin: 0;
