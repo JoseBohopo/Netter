@@ -78,23 +78,28 @@ export const addNettwit = async ({
   }
 };
 
+export const sortData = (querySnapshot: any) => {
+  querySnapshot.sort((a: any, b: any) => b.createdAt - a.createdAt);
+};
+
 export const fetchLatestNettwits = async () => {
   let querySnapshot;
   try {
-    return (querySnapshot = await getDocs(collection(db, "nettwits")).then(
-      (snapshot) =>
-        snapshot.docs.map((docs) => {
-          const data = docs.data();
-          const id = docs.id;
-          const { createdAt } = data;
+    querySnapshot = await getDocs(collection(db, "nettwits")).then((snapshot) =>
+      snapshot.docs.map((docs) => {
+        const data = docs.data();
 
-          return {
-            ...data,
-            id,
-            createdAt: +createdAt.toDate(),
-          };
-        })
-    ));
+        const id = docs.id;
+        const { createdAt } = data;
+
+        return {
+          ...data,
+          id,
+          createdAt: +createdAt.toDate(),
+        };
+      })
+    );
+    return sortData(querySnapshot);
   } catch (error) {
     console.log(error);
   }
