@@ -1,23 +1,27 @@
 import { time } from "console";
+import ArrowLeftIcon from "eplant/components/Atoms/Icons/Arrow-left";
+import CreateIcon from "eplant/components/Atoms/Icons/Create-Icon";
 import AppLayout from "eplant/components/Layouts/AppLayout";
 import Nettwit from "eplant/components/Organisms/Nettwit";
 import { fetchLatestNettwits } from "eplant/firebase/client";
 import useUser from "eplant/hooks/useUser";
 import { colors } from "eplant/styles/theme";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 function Home() {
   const [timeline, setTimeline] = useState<any>();
+
   const user = useUser();
+
   useEffect(() => {
-    user &&
-      fetchLatestNettwits()
-        .then(setTimeline)
-        .catch((error) => console.log(error));
-    console.log(
-      "🚀 ~ file: index.tsx:20 ~ useEffect ~  fetchLatestNettwits():",
-      fetchLatestNettwits()
-    );
+    const getData = async () => {
+      user &&
+        (await fetchLatestNettwits()
+          .then(setTimeline)
+          .catch((error) => console.log(error)));
+    };
+    getData();
   }, [user]);
 
   const timelineMapped = (timeline: any[]): JSX.Element[] =>
@@ -39,7 +43,11 @@ function Home() {
           <h2>Inicio</h2>
         </header>
         <section>{timelineMapped(timeline)}</section>
-        <nav></nav>
+        <nav>
+          <Link href={"/compose/nettwit"}>
+            <CreateIcon width="1.5rem" height="1.5rem" />
+          </Link>
+        </nav>
       </AppLayout>
       <style jsx>
         {`
@@ -53,12 +61,25 @@ function Home() {
             background: #ffffffaa;
             backdrop-filter: blur(5px);
           }
+
+          section {
+            flex: 1;
+          }
           nav {
             bottom: 0;
             border-top: 0.0625rem solid #eee;
-            position: fixed;
+            display: flex;
+            justify-content: center;
+            flex: 1 1;
+            height: 100%;
+            align-items: center;
             width: 100%;
             background: ${colors.white};
+            padding: 0.5rem;
+          }
+          nav a {
+            display: flex;
+            align-items: baseline;
           }
           h2 {
             font-weight: 700;
