@@ -1,9 +1,10 @@
 import { useState } from "react";
 import Button from "eplant/components/Atoms/Button";
 import AppLayout from "eplant/components/Layouts/AppLayout";
-import useUser, { IUser } from "eplant/hooks/useUser";
+import useUser from "eplant/hooks/useUser";
 import { addNettwit } from "eplant/firebase/client";
 import { useRouter } from "next/router";
+import { IUser } from "eplant/hooks/types";
 
 const FORM_STATES = {
   LOADING: 0,

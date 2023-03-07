@@ -10,7 +10,8 @@ import Github from "eplant/components/Atoms/Icons/GitHub";
 import styles from "../components/Layouts/styles";
 import { auth, loginWithGithub } from "eplant/firebase/client";
 import { useRouter } from "next/router";
-import useUser, { IUser, USER_STATES } from "eplant/hooks/useUser";
+import useUser, { USER_STATES } from "eplant/hooks/useUser";
+import { IUser } from "eplant/hooks/types";
 
 export default function Home() {
   const { currentUser } = useUser() as IUser;
