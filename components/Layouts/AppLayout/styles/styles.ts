@@ -47,6 +47,8 @@ const styles = css`
     background: #fff;
     border-radius: 0.625rem;
     box-shadow: 0 0.625rem 1.563rem rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
     width: 100%;
     position: relative;
     height: 100%;
