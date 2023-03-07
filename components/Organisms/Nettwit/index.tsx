@@ -1,10 +1,12 @@
 import { formatDistance, subDays } from "date-fns";
 import TextStrong from "eplant/components/Atoms/TextStrong";
 import Avatar from "eplant/components/Molecules/Avatar";
+import useTimeAgo from "eplant/hooks/useTimeAgo";
 import style from "./styles";
 import { INettwit } from "./types";
 
 function Nettwit({ avatar, userName, id, content, createdAt }: INettwit) {
+  const timeAgo = useTimeAgo(Number(createdAt));
   return (
     <>
       <article key={id}>
@@ -12,8 +14,11 @@ function Nettwit({ avatar, userName, id, content, createdAt }: INettwit) {
           <Avatar src={avatar} />
         </div>
         <section>
-          <TextStrong text={userName} />
-          <p>{createdAt}</p>
+          <div className="head-content">
+            <TextStrong text={userName} />
+            <p>{timeAgo}</p>
+          </div>
+
           <p>{content}</p>
         </section>
       </article>

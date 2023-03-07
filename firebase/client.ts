@@ -87,14 +87,11 @@ export const fetchLatestNettwits = async () => {
           const data = docs.data();
           const id = docs.id;
           const { createdAt } = data;
-          const normalizedCreatedAt = new Date(
-            createdAt.seconds * 1000
-          ).toDateString();
 
           return {
             ...data,
             id,
-            createdAt: normalizedCreatedAt,
+            createdAt: +createdAt.toDate(),
           };
         })
     ));
