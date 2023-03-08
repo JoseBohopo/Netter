@@ -1,5 +1,13 @@
 import { initializeApp } from "firebase/app";
 import { addDoc, collection, getDocs, Timestamp } from "firebase/firestore";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+  uploadString,
+} from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
 import {
   GithubAuthProvider,
@@ -54,6 +62,7 @@ interface IAddNettwit {
   content?: string;
   userId: string | null;
   userName: string | null;
+  img?: string | null;
 }
 
 export const addNettwit = async ({
@@ -61,6 +70,7 @@ export const addNettwit = async ({
   content,
   userId,
   userName,
+  img,
 }: IAddNettwit) => {
   try {
     const docRef = await addDoc(collection(db, "nettwits"), {
@@ -71,6 +81,7 @@ export const addNettwit = async ({
       userName,
       likesCount: 0,
       sharedCount: 0,
+      img,
     });
     return docRef;
   } catch (error) {
@@ -99,6 +110,31 @@ export const fetchLatestNettwits = async () => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const uploadImage = async (file: File) => {
+  const metadata = {
+    contentType: "image/jpeg",
+  };
+
+  let storage;
+  let task;
+  let uploadTask;
+  let data;
+  let imgUrl;
+
+  try {
+    storage = await getStorage();
+    task = ref(storage, `images/${file.name}`);
+    uploadTask = uploadBytesResumable(task, file);
+    data = await uploadBytes(task, file, metadata);
+    imgUrl = await getDownloadURL(ref(storage, `images/${file.name}`))
+      .then((url) => url)
+      .catch((error) => console.error(error));
+  } catch (error) {
+    console.log("🚀 ~ file: client.ts:149 ~ uploadImage ~ error:", error);
+  }
+  return { data, uploadTask, imgUrl };
 };
 
 export default db;
