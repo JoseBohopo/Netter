@@ -4,8 +4,8 @@ const style = css`
   img {
     width: 100%;
     height: auto;
-    border-radius: 10px;
-    margin-top: 10px;
+    border-radius: 0.625rem;
+    margin-top: 0.625rem;
   }
   article {
     display: flex;
@@ -23,7 +23,7 @@ const style = css`
   }
 
   .head-content p {
-    font-size: 13px;
+    font-size: 0.813rem;
     color: #808080;
   }
   p {

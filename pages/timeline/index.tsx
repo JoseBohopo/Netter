@@ -12,7 +12,7 @@ export default function Timeline() {
 
       <style jsx>{`
         h1 {
-          font-size: 36px;
+          font-size: 2.25rem;
           color: red;
         }
       `}</style>

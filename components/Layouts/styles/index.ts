@@ -10,7 +10,7 @@ const styles = css`
 
   h2 {
     color: ${colors.secondary};
-    font-size: 18px;
+    font-size: 1.125rem;
     margin: 0;
   }
   section {

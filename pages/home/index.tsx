@@ -72,7 +72,7 @@ function Home() {
             display: flex;
             align-items: center;
             background: #ffffffaa;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(0.313rem);
           }
 
           section {
@@ -96,7 +96,7 @@ function Home() {
           }
           nav Link:hover {
             background: radial-gradient(#0099ff33 15%, red 16%);
-            background-size: 180px 180px;
+            background-size: 11.25rem 11.25rem;
             background-position: center;
           }
           nav Link:hover > :global(svg) {
@@ -105,7 +105,7 @@ function Home() {
           h2 {
             font-weight: 700;
             font-size: 1.313rem;
-            padding-left: 15px;
+            padding-left: 0.938rem;
           }
           article {
             padding: 0.625rem 0.938rem;

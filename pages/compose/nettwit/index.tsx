@@ -139,8 +139,8 @@ function ComposeNettwit() {
           img {
             width: 100%;
             height: auto;
-            border-radius: 10px;
-            margin-bottom: 10px;
+            border-radius: 0.625rem;
+            margin-bottom: 0.625rem;
           }
           .remove-img {
             height: auto;
@@ -156,33 +156,33 @@ function ComposeNettwit() {
           }
           form {
             width: 100%;
-            padding: 10px;
+            padding: 0.625rem;
           }
           button {
             position: absolute;
             right: 0;
             top: 0;
             transform: translate(40%, -50%);
-            font-size: 24px;
-            height: 32px;
-            width: 32px;
+            font-size: 1.5rem;
+            height: 2rem;
+            width: 2rem;
             background: rgba(0, 0, 0, 0.3);
             border: 0;
-            border-radius: 999px;
+            border-radius: 624.938rem;
             color: ${colors.white};
           }
           textarea {
             border: ${drag === DRAG_IMAGES_STATES.DRAG_OVER
-              ? `3px dashed ${colors.primary}`
-              : "3px solid transparent"};
-            border-radius: 10px;
+              ? `0.188rem dashed ${colors.primary}`
+              : "0.188rem solid transparent"};
+            border-radius: 0.625rem;
 
             width: 100%;
-            padding: 15px;
+            padding: 0.938rem;
             outline: 0;
-            font-size: 21px;
+            font-size: 1.313rem;
             resize: none;
-            min-height: 200px;
+            min-height: 12.5rem;
           }
         `}
       </style>
