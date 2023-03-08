@@ -4,4 +4,5 @@ export interface INettwit {
   content?: string;
   createdAt?: string;
   id?: number;
+  img?: string | null;
 }

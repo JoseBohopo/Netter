@@ -5,7 +5,7 @@ import useTimeAgo from "eplant/hooks/useTimeAgo";
 import style from "./styles";
 import { INettwit } from "./types";
 
-function Nettwit({ avatar, userName, id, content, createdAt }: INettwit) {
+function Nettwit({ avatar, userName, id, content, createdAt, img }: INettwit) {
   const timeAgo = useTimeAgo(Number(createdAt));
   return (
     <>
@@ -20,6 +20,7 @@ function Nettwit({ avatar, userName, id, content, createdAt }: INettwit) {
           </div>
 
           <p>{content}</p>
+          {img && <img src={img}></img>}
         </section>
       </article>
       <style jsx>{style}</style>

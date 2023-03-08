@@ -1,6 +1,12 @@
 import css from "styled-jsx/css";
 
 const style = css`
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-top: 10px;
+  }
   article {
     display: flex;
     padding: 0.625rem 0.938rem;
