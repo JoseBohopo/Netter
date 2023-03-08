@@ -1,11 +1,14 @@
 import { time } from "console";
 import ArrowLeftIcon from "eplant/components/Atoms/Icons/Arrow-left";
 import CreateIcon from "eplant/components/Atoms/Icons/Create-Icon";
+import HomeIcon from "eplant/components/Atoms/Icons/Home-Icon";
+import SearchIcon from "eplant/components/Atoms/Icons/Search-Icon";
 import AppLayout from "eplant/components/Layouts/AppLayout";
 import Nettwit from "eplant/components/Organisms/Nettwit";
 import { fetchLatestNettwits } from "eplant/firebase/client";
 import useUser from "eplant/hooks/useUser";
 import { colors } from "eplant/styles/theme";
+import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -33,19 +36,29 @@ function Home() {
           userName={nettwit.userName}
           avatar={nettwit.avatar}
           content={nettwit.content}
+          img={nettwit.img}
         />
       );
     });
   return (
     <>
       <AppLayout>
+        <Head>
+          <title>Inicio / Nettwit</title>
+        </Head>
         <header>
           <h2>Inicio</h2>
         </header>
         <section>{timelineMapped(timeline)}</section>
         <nav>
+          <Link href={"/home"}>
+            <HomeIcon width={32} height={20} stroke="#09f" />
+          </Link>
           <Link href={"/compose/nettwit"}>
-            <CreateIcon width="1.5rem" height="1.5rem" />
+            <CreateIcon width={32} height={20} stroke="#09f" />
+          </Link>
+          <Link href={"/compose/nettwit"}>
+            <SearchIcon width={32} height={20} stroke="#09f" />
           </Link>
         </nav>
       </AppLayout>
@@ -69,17 +82,25 @@ function Home() {
             bottom: 0;
             border-top: 0.0625rem solid #eee;
             display: flex;
-            justify-content: center;
+            justify-content: space-evenly;
             flex: 1 1;
-            height: 100%;
+            height: max-content;
             align-items: center;
             width: 100%;
             background: ${colors.white};
-            padding: 0.5rem;
+            padding: 0.5rem 0 0 0;
           }
-          nav a {
+          nav Link {
             display: flex;
             align-items: baseline;
+          }
+          nav Link:hover {
+            background: radial-gradient(#0099ff33 15%, red 16%);
+            background-size: 180px 180px;
+            background-position: center;
+          }
+          nav Link:hover > :global(svg) {
+            stroke: ${colors.primary};
           }
           h2 {
             font-weight: 700;
