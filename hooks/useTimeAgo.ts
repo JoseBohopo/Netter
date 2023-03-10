@@ -17,7 +17,7 @@ const DATE_UNITS = [
 
 const getDateDiffs = (timestamp: number): ITime | void => {
   const now = Date.now();
-  const elapsed = (timestamp - now) / 1000;
+  const elapsed = timestamp - now;
 
   for (const [units, secondsInUnit] of DATE_UNITS) {
     if (Math.abs(elapsed) > secondsInUnit || units === "seconds") {
@@ -56,6 +56,7 @@ const updateTimeWithInterval = (
 
 const APIFormatDate = (timeago: ITime | void) => {
   const { value, units } = timeago as ITime;
+
   const rtf = new Intl.RelativeTimeFormat("en", { style: "short" });
 
   return rtf.format(value, units);
