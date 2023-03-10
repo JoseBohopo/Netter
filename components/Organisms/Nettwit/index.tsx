@@ -1,4 +1,3 @@
-import { formatDistance, subDays } from "date-fns";
 import TextStrong from "eplant/components/Atoms/TextStrong";
 import Avatar from "eplant/components/Molecules/Avatar";
 import useTimeAgo from "eplant/hooks/useTimeAgo";
@@ -6,7 +5,13 @@ import style from "./styles";
 import { INettwit } from "./types";
 
 function Nettwit({ avatar, userName, id, content, createdAt, img }: INettwit) {
-  const timeAgo = useTimeAgo(Number(createdAt));
+  console.log("🚀 ~ file: index.tsx:9 ~ Nettwit ~ createdAt:", createdAt);
+
+  const time = createdAt?._seconds
+    ? createdAt?._seconds
+    : Number(createdAt) / 1000;
+
+  const timeAgo = useTimeAgo(time);
   return (
     <>
       <article key={id}>
