@@ -25,7 +25,7 @@ export const AuthContextProvider = ({ children }: IAuthProvider) => {
     return () => {
       (async () => {
         try {
-          await unsubscribe();
+          unsubscribe();
         } catch (error) {
           console.error(error);
           setLoading(false);
