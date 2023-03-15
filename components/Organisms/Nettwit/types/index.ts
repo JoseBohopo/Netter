@@ -2,12 +2,8 @@ export interface INettwit {
   userName?: string;
   avatar?: string;
   content?: string;
-  createdAt?: ICreatedAt;
+  createdAt?: any;
   id?: number;
   img?: string | null;
-}
-
-interface ICreatedAt {
-  _nanoseconds: number;
-  _seconds: number;
+  key: number;
 }
