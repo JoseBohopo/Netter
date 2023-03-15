@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import Head from "next/head";
 import { createUserWithEmailAndPassword, User } from "firebase/auth";
 
-import AppLayout from "eplant/components/Layouts/AppLayout";
 import Image from "next/image";
 import { colors } from "eplant/styles/theme";
 import Button from "eplant/components/Atoms/Button";
@@ -62,25 +61,24 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <AppLayout>
-        <section>
-          <Image
-            src="/netter-logo.png"
-            width="70"
-            height={70}
-            alt="Netter logo image"
-          />
-          <h1 className="main-title">Netter</h1>
-          <h2>
-            Talk about development <br /> with developers{" "}
-          </h2>
-          {showButtonGithubLogin(currentUser)}
-          {showSpinner(currentUser)}
-          {/* <div>
+
+      <section>
+        <Image
+          src="/netter-logo.png"
+          width="70"
+          height={70}
+          alt="Netter logo image"
+        />
+        <h1 className="main-title">Netter</h1>
+        <h2>
+          Talk about development <br /> with developers{" "}
+        </h2>
+        {showButtonGithubLogin(currentUser)}
+        {showSpinner(currentUser)}
+        {/* <div>
             <Button onClick={handleCreateWithEmail}>Sign with Email</Button>
           </div> */}
-        </section>
-      </AppLayout>
+      </section>
 
       <style jsx>{styles}</style>
     </>
