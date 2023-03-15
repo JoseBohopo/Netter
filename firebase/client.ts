@@ -4,7 +4,10 @@ import {
   collection,
   DocumentData,
   getDocs,
+  limit,
   onSnapshot,
+  orderBy,
+  query,
   Timestamp,
 } from "firebase/firestore";
 import {
@@ -110,7 +113,12 @@ const mapNettwitFromFirebaseToNettwitObject = (docs: any) => {
 //Fetch data with real time from firebase
 
 export const listenLatestNettwits = (callback: (doc: DocumentData) => {}) => {
-  const unsub = onSnapshot(collection(db, "nettwits"), (snapshot) => {
+  const q = query(
+    collection(db, "nettwits"),
+    orderBy("createdAt", "desc"),
+    limit(20)
+  );
+  const unsub = onSnapshot(q, (snapshot) => {
     callback(
       snapshot.docs.map((docs) => mapNettwitFromFirebaseToNettwitObject(docs))
     );
