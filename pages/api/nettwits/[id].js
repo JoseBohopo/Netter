@@ -5,12 +5,19 @@ export default async (request, response) => {
   const { id } = query
 
   try {
-    const snapshot = await db.collection('nettwits').doc(id).get().then((doc) => {
+    await db.collection('nettwits').doc(id).get().then((doc) => {
       const data = doc.data()
-      response.json(data)
-    }).catch(error => console.log(error))
+      const id = doc.id
+      const { createdAt } = data
+
+      response.json({
+        ...data,
+        id,
+        createdAt: +createdAt.toDate()
+      })
+    }).catch(error => console.error(error))
   } catch (error) {
     response.status(404).end()
-    console.log(error)
+    console.error(error)
   }
 }
