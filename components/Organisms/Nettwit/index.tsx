@@ -1,27 +1,44 @@
 import TextStrong from "eplant/components/Atoms/TextStrong";
 import Avatar from "eplant/components/Molecules/Avatar";
+import useDateTimeFormat from "eplant/hooks/useDateTimeFormat";
 import useTimeAgo from "eplant/hooks/useTimeAgo";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import style from "./styles";
 import { INettwit } from "./types";
 
-function Nettwit({ avatar, userName, id, content, createdAt, img }: INettwit) {
-  console.log("🚀 ~ file: index.tsx:9 ~ Nettwit ~ createdAt:", createdAt);
+function Nettwit({
+  avatar,
+  userName,
+  id,
+  content,
+  createdAt,
+  img,
+  key,
+}: INettwit) {
+  const timeAgo = useTimeAgo(createdAt);
+  const createdAtFormatted = useDateTimeFormat(createdAt);
+  const router = useRouter();
 
-  const time = createdAt?._seconds
-    ? createdAt?._seconds
-    : Number(createdAt) / 1000;
-
-  const timeAgo = useTimeAgo(time);
+  const handleArticleClick = (
+    e: React.MouseEvent<HTMLElement>,
+    id?: number
+  ) => {
+    e.preventDefault();
+    router.push(`/status/${id}`);
+  };
   return (
     <>
-      <article key={id}>
+      <article onClick={(e) => handleArticleClick(e, id)} key={id}>
         <div>
           <Avatar src={avatar} />
         </div>
         <section>
           <div className="head-content">
             <TextStrong text={userName} />
-            <p>{timeAgo}</p>
+            <Link className="time-link" href={`/status/${id}`}>
+              <time title={createdAtFormatted}>{timeAgo}</time>
+            </Link>
           </div>
 
           <p>{content}</p>
