@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import { ISelectUnit, ITime } from "./types";
+import { formatDate } from "./useDateTimeFormat";
 
 let interval: any;
 const DATE_UNITS = [
@@ -15,13 +16,15 @@ const DATE_UNITS = [
   ["seconds", 1],
 ];
 
+let isRelativeTimeFormatSupported =
+  typeof Intl !== "undefined" && Intl.RelativeTimeFormat;
 const getDateDiffs = (timestamp: number): ITime | void => {
   const now = Date.now();
   const elapsed = timestamp - now;
 
   for (const [units, secondsInUnit] of DATE_UNITS) {
     if (Math.abs(elapsed) > secondsInUnit || units === "seconds") {
-      const value = Math.round(elapsed / Number(secondsInUnit));
+      const value = Math.round(elapsed / Number(secondsInUnit) / 1000);
       return { value, units };
     }
   }
@@ -66,10 +69,14 @@ function useTimeAgo(timestamp: number) {
   const [timeago, setTimeago] = useState(() => getDateDiffs(timestamp));
 
   useEffect(() => {
-    updateTimeWithInterval(getDateDiffs, setTimeago, timestamp);
+    isRelativeTimeFormatSupported &&
+      updateTimeWithInterval(getDateDiffs, setTimeago, timestamp);
     return () => clearInterval(interval);
   }),
     [timeago];
+  if (!isRelativeTimeFormatSupported) {
+    return formatDate(timestamp);
+  }
 
   return APIFormatDate(timeago);
 }
