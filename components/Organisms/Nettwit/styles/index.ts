@@ -13,6 +13,11 @@ const style = css`
     border-bottom: 0.0625rem solid #eee;
   }
 
+  article:hover {
+    background: #f5f8fa;
+    cursor: pointer;
+  }
+
   div {
     padding-right: 0.5rem;
   }
@@ -22,13 +27,19 @@ const style = css`
     align-items: center;
   }
 
-  .head-content p {
+  .head-content time {
     font-size: 0.813rem;
-    color: #808080;
   }
-  p {
+  time {
     line-height: 1.3125;
     margin: 0;
+    text-decoration: none;
+    font-size: 14px;
+    color: #555;
+  }
+
+  time:hover {
+    text-decoration: underline;
   }
 `;
 
