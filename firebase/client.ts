@@ -106,6 +106,9 @@ const mapNettwitFromFirebaseToNettwitObject = (docs: any) => {
     createdAt: +createdAt.toDate(),
   };
 };
+
+//Fetch data with real time from firebase
+
 export const listenLatestNettwits = (callback: (doc: DocumentData) => {}) => {
   const unsub = onSnapshot(collection(db, "nettwits"), (snapshot) => {
     callback(
@@ -114,6 +117,8 @@ export const listenLatestNettwits = (callback: (doc: DocumentData) => {}) => {
   });
   return unsub;
 };
+
+//Fetch data without real time from firebase
 
 // export const fetchLatestNettwits = async () => {
 //   let querySnapshot;
