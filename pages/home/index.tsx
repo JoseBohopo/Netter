@@ -1,13 +1,11 @@
-import { time } from "console";
-import ArrowLeftIcon from "eplant/components/Atoms/Icons/Arrow-left";
 import CreateIcon from "eplant/components/Atoms/Icons/Create-Icon";
 import HomeIcon from "eplant/components/Atoms/Icons/Home-Icon";
 import SearchIcon from "eplant/components/Atoms/Icons/Search-Icon";
-import AppLayout from "eplant/components/Layouts/AppLayout";
 import Nettwit from "eplant/components/Organisms/Nettwit";
-import { fetchLatestNettwits } from "eplant/firebase/client";
+import { listenLatestNettwits } from "eplant/firebase/client";
 import useUser from "eplant/hooks/useUser";
 import { colors } from "eplant/styles/theme";
+import { DocumentData } from "firebase/firestore";
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -18,50 +16,55 @@ function Home() {
   const user = useUser();
 
   useEffect(() => {
+    let unsubscribe: () => void;
     const getData = async () => {
-      user &&
-        (await fetchLatestNettwits()
-          .then(setTimeline)
-          .catch((error) => console.log(error)));
+      if (user) {
+        unsubscribe = listenLatestNettwits((docs: DocumentData): any => {
+          setTimeline(docs);
+        });
+      }
     };
     getData();
+    return () => unsubscribe && unsubscribe();
   }, [user]);
 
   const timelineMapped = (timeline: any[]): JSX.Element[] =>
-    timeline?.map((nettwit: any) => {
+    timeline?.map((nettwit) => {
       return (
-        <Nettwit
-          key={nettwit.id}
-          createdAt={nettwit.createdAt}
-          userName={nettwit.userName}
-          avatar={nettwit.avatar}
-          content={nettwit.content}
-          img={nettwit.img}
-        />
+        <>
+          <Nettwit
+            key={nettwit.id}
+            createdAt={nettwit.createdAt}
+            userName={nettwit.userName}
+            avatar={nettwit.avatar}
+            content={nettwit.content}
+            img={nettwit.img}
+            id={nettwit?.id}
+          />
+        </>
       );
     });
   return (
     <>
-      <AppLayout>
-        <Head>
-          <title>Inicio / Nettwit</title>
-        </Head>
-        <header>
-          <h2>Inicio</h2>
-        </header>
-        <section>{timelineMapped(timeline)}</section>
-        <nav>
-          <Link href={"/home"}>
-            <HomeIcon width={32} height={20} stroke="#09f" />
-          </Link>
-          <Link href={"/compose/nettwit"}>
-            <CreateIcon width={32} height={20} stroke="#09f" />
-          </Link>
-          <Link href={"/compose/nettwit"}>
-            <SearchIcon width={32} height={20} stroke="#09f" />
-          </Link>
-        </nav>
-      </AppLayout>
+      <Head>
+        <title>Inicio / Nettwit</title>
+      </Head>
+      <header>
+        <h2>Inicio</h2>
+      </header>
+      <section>{timelineMapped(timeline)}</section>
+      <nav>
+        <Link href={"/home"}>
+          <HomeIcon width={32} height={20} stroke="#09f" />
+        </Link>
+        <Link href={"/compose/nettwit"}>
+          <CreateIcon width={32} height={20} stroke="#09f" />
+        </Link>
+        <Link href={"/compose/nettwit"}>
+          <SearchIcon width={32} height={20} stroke="#09f" />
+        </Link>
+      </nav>
+
       <style jsx>
         {`
           header {
