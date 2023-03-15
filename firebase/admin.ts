@@ -1,5 +1,4 @@
-import { applicationDefault, getApps } from "firebase-admin/app";
-// require("dotenv").config();
+import { applicationDefault } from "firebase-admin/app";
 
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
@@ -7,8 +6,7 @@ const { getFirestore } = require("firebase-admin/firestore");
 try {
   initializeApp({
     credential: applicationDefault(),
-    databaseUrl:
-      "https://console.firebase.google.com/project/net-ter/database/net-ter-default-rtdb/data/~2F",
+    databaseUrl: process.env.FIREBASE_DATABASE_URL,
   });
 } catch (error) {}
 
