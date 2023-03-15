@@ -1,6 +1,5 @@
 import { DragEvent, useEffect, useState } from "react";
 import Button from "eplant/components/Atoms/Button";
-import AppLayout from "eplant/components/Layouts/AppLayout";
 import useUser from "eplant/hooks/useUser";
 import { addNettwit, uploadImage } from "eplant/firebase/client";
 import { useRouter } from "next/router";
@@ -40,7 +39,6 @@ function ComposeNettwit() {
   const [drag, setDrag] = useState(DRAG_IMAGES_STATES.NONE);
   const [task, setTask] = useState<any>();
   const [imgUrl, setImgUrl] = useState<string | null>();
-  console.log("🚀 ~ file: index.tsx:42 ~ ComposeNettwit ~ imgUrl:", imgUrl);
 
   const getInfo = () => {
     if (task) {
@@ -105,35 +103,34 @@ function ComposeNettwit() {
 
   return (
     <>
-      <AppLayout>
-        <Head>
-          <title>Create Nettwit</title>
-        </Head>
-        <section className="form-container">
-          {currentUser && (
-            <Avatar src={currentUser.photoURL ? currentUser.photoURL : ""} />
+      <Head>
+        <title>Create Nettwit</title>
+      </Head>
+      <section className="form-container">
+        {currentUser && (
+          <Avatar src={currentUser.photoURL ? currentUser.photoURL : ""} />
+        )}
+        <form onSubmit={handleSubmit}>
+          <textarea
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDrop={handleOnDrop}
+            onChange={handleChange}
+            value={message}
+            placeholder="What is going on?"
+          ></textarea>
+          {imgUrl && (
+            <section className="remove-img">
+              <button onClick={() => setImgUrl(null)}>x</button>
+              <img src={imgUrl} alt="image uploaded" />
+            </section>
           )}
-          <form onSubmit={handleSubmit}>
-            <textarea
-              onDragEnter={handleDragEnter}
-              onDragLeave={handleDragLeave}
-              onDrop={handleOnDrop}
-              onChange={handleChange}
-              value={message}
-              placeholder="What is going on?"
-            ></textarea>
-            {imgUrl && (
-              <section className="remove-img">
-                <button onClick={() => setImgUrl(null)}>x</button>
-                <img src={imgUrl} alt="image uploaded" />
-              </section>
-            )}
-            <div>
-              <Button disabled={isButtonDisabled}>Net</Button>
-            </div>
-          </form>
-        </section>
-      </AppLayout>
+          <div>
+            <Button disabled={isButtonDisabled}>Net</Button>
+          </div>
+        </form>
+      </section>
+
       <style jsx>
         {`
           img {
