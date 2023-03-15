@@ -1,12 +1,18 @@
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, getDocs, Timestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  DocumentData,
+  getDocs,
+  onSnapshot,
+  Timestamp,
+} from "firebase/firestore";
 import {
   getDownloadURL,
   getStorage,
   ref,
   uploadBytes,
   uploadBytesResumable,
-  uploadString,
 } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
 import {
@@ -29,7 +35,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+export const db = getFirestore(app);
 
 export const auth = getAuth();
 
@@ -52,8 +58,7 @@ export const loginWithGithub = async () => {
 export const loginWithEmail = async () => {
   const emailProvider = new EmailAuthProvider();
   return signInWithPopup(auth, emailProvider).then((user) => {
-    console.log(user);
-    //   return mapUserFromFirebaseAuth(user);
+    return mapUserFromFirebaseAuth(user);
   });
 };
 
@@ -81,7 +86,7 @@ export const addNettwit = async ({
       userName,
       likesCount: 0,
       sharedCount: 0,
-      img,
+      img: img || null,
     });
     return docRef;
   } catch (error) {
@@ -89,28 +94,38 @@ export const addNettwit = async ({
   }
 };
 
-export const fetchLatestNettwits = async () => {
-  let querySnapshot;
-  try {
-    return (querySnapshot = await getDocs(collection(db, "nettwits")).then(
-      (snapshot) =>
-        snapshot.docs.map((docs) => {
-          const data = docs.data();
+const mapNettwitFromFirebaseToNettwitObject = (docs: any) => {
+  const data = docs.data();
 
-          const id = docs.id;
-          const { createdAt } = data;
+  const id = docs.id;
+  const { createdAt } = data;
 
-          return {
-            ...data,
-            id,
-            createdAt: +createdAt.toDate(),
-          };
-        })
-    ));
-  } catch (error) {
-    console.log(error);
-  }
+  return {
+    ...data,
+    id,
+    createdAt: +createdAt.toDate(),
+  };
 };
+export const listenLatestNettwits = (callback: (doc: DocumentData) => {}) => {
+  const unsub = onSnapshot(collection(db, "nettwits"), (snapshot) => {
+    callback(
+      snapshot.docs.map((docs) => mapNettwitFromFirebaseToNettwitObject(docs))
+    );
+  });
+  return unsub;
+};
+
+// export const fetchLatestNettwits = async () => {
+//   let querySnapshot;
+//   try {
+//     return (querySnapshot = await getDocs(collection(db, "nettwits")).then(
+//       (snapshot) =>
+//         snapshot.docs.map((docs) => mapNettwitFromFirebaseToNettwitObject(docs))
+//     ));
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 export const uploadImage = async (file: File) => {
   const metadata = {
