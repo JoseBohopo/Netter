@@ -17,6 +17,8 @@ const styles = css`
     display: flex;
     gap: 0.7rem;
     user-select: none;
+    justify-content: center;
+    width: 100%;
   }
 
   button[disabled] {
