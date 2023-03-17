@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import { createUserWithEmailAndPassword, User } from "firebase/auth";
 
@@ -11,9 +11,12 @@ import { auth, loginWithGithub } from "eplant/firebase/client";
 import { useRouter } from "next/router";
 import useUser, { USER_STATES } from "eplant/hooks/useUser";
 import { IUser } from "eplant/hooks/types";
+import Modal from "eplant/components/Molecules/Modal";
+import Signup from "eplant/components/Organisms/Singup";
 
 export default function Home() {
   const { currentUser } = useUser() as IUser;
+  const [toggle, setToggle] = useState(false);
 
   const router = useRouter();
 
@@ -38,11 +41,9 @@ export default function Home() {
 
   const showButtonGithubLogin = (user: unknown): boolean | JSX.Element =>
     user === USER_STATES.NOT_KNOWN && (
-      <div>
-        <Button onClick={handleClick}>
-          <Github fill={colors.white} /> Log in with Github
-        </Button>
-      </div>
+      <Button onClick={handleClick}>
+        <Github fill={colors.white} /> Log in with Github
+      </Button>
     );
 
   const showSpinner = (user: unknown): boolean | JSX.Element =>
@@ -73,11 +74,21 @@ export default function Home() {
         <h2>
           Talk about development <br /> with developers{" "}
         </h2>
-        {showButtonGithubLogin(currentUser)}
-        {showSpinner(currentUser)}
-        {/* <div>
+        <div>
+          {showButtonGithubLogin(currentUser)}
+          {/* <div>
             <Button onClick={handleCreateWithEmail}>Sign with Email</Button>
           </div> */}
+
+          <Modal toggle={toggle} setToggle={setToggle} title="Sign up">
+            <Signup />
+          </Modal>
+
+          <Button onClick={() => (toggle ? setToggle(false) : setToggle(true))}>
+            Sing up{" "}
+          </Button>
+          {showSpinner(currentUser)}
+        </div>
       </section>
 
       <style jsx>{styles}</style>
