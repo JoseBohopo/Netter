@@ -35,7 +35,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    currentUser && router.replace("/home");
+    currentUser && router.push("/home");
   }),
     [currentUser];
 
