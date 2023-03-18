@@ -1,39 +1,45 @@
 import Button from "eplant/components/Atoms/Button";
+import Form from "../Form";
 
 function Signup() {
+  const inputsArray = [
+    {
+      htmlForValue: "username",
+      labelValue: "Username",
+      id: "username",
+      placeHolder: "Jhon Doe",
+      type: "text",
+    },
+    {
+      htmlForValue: "email",
+      labelValue: "Email",
+      id: "email",
+      placeHolder: "jhondoe@me.com",
+      type: "email",
+    },
+    {
+      htmlForValue: "password",
+      labelValue: "Password",
+      id: "password",
+      placeHolder: "*********",
+      type: "password",
+    },
+    {
+      htmlForValue: "confirmPassword",
+      labelValue: "Confirm Password",
+      id: "confirmPassword",
+      placeHolder: "********",
+      type: "password",
+    },
+  ];
+
   return (
     <>
-      <form action="">
-        <label htmlFor="email">Email:</label>
-        <input type="email" id="email" placeholder="brendaneich@js.com" />
-
-        <label htmlFor="email">Password:</label>
-        <input type="password" id="password" placeholder="***********" />
-        <label htmlFor="email">Confirm Password:</label>
-        <input
-          type="confirmPassword"
-          id="confirmPassword"
-          placeholder="***********"
-        />
-        <Button>Submit</Button>
-      </form>
-
+      <Form inputData={inputsArray} />
       <style jsx>
         {`
           body {
             gap-column: 3rem;
-          }
-          form {
-            display: flex;
-            flex-direction: column;
-            gap: 0.7rem;
-          }
-
-          input {
-            padding: 0.7rem 1rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 0.9em;
           }
         `}
       </style>
