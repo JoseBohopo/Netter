@@ -34,11 +34,25 @@ const styles = css`
     padding: 3.3rem;
     min-height: 250px;
     position: absolute;
-    top: 20%;
+    top: 6%;
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 15px;
     z-index: 2;
+
+    opacity: 0;
+    transform: scale(1.15);
+    transition: transform 1s cubic-bezier(0.465, 0.183, 0.153, 0.946),
+      opacity 0.5s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+    will-change: transform, opacity;
+  }
+  .modal.visible {
+    pointer-events: auto;
+    opacity: 1;
+    transform: scale(1);
+
+    transition: transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946),
+      opacity 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
   }
 
   .btn-close {
@@ -119,6 +133,9 @@ const styles = css`
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(3px);
     z-index: 1;
+  }
+  .hidden {
+    display: none;
   }
 `;
 
