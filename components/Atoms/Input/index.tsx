@@ -1,13 +1,22 @@
+import { MutableRefObject } from "react";
+
 interface IInput {
   id: string;
   placeHolder: string;
   type: string;
+  inputRef: any;
 }
 
-function Input({ id, placeHolder, type }: IInput) {
+function Input({ id, placeHolder, type, inputRef }: IInput) {
   return (
     <>
-      <input id={id} placeholder={placeHolder} type={type} className="input" />
+      <input
+        ref={inputRef}
+        id={id}
+        placeholder={placeHolder}
+        type={type}
+        className="input"
+      />
       <style jsx>{`
         .input {
           appearance: none;
